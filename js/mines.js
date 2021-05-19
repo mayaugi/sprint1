@@ -4,7 +4,7 @@ const MINE_IMG = '💩'
 
 var gBoard = {
     minesAroundCount: 0,
-    isShown: true,
+    isShown: false,
     isMine: false,
     isMarked: false
 }
@@ -35,7 +35,7 @@ function createBoard() {
         board.push([]);
         for (var j = 0; j < SIZE; j++) {
             var cell = {
-                minesAroundCount: 0, isShown: true,
+                minesAroundCount: 0, isShown: false,
                 isMine: false, isMarked: true
             };
 
@@ -64,7 +64,7 @@ function renderBoard(board) {
                 if (currentCell.isMine) {
                     strHTML += MINE_IMG;
                 } else {
-                    currentCell.minesAroundCount = getMinesNegsCount(i , j, board)
+                    currentCell.minesAroundCount = getMinesNegsCount(i, j, board)
                     strHTML += `${currentCell.minesAroundCount}`
                 }
             }
@@ -99,16 +99,22 @@ function getMinesNegsCount(cellI, cellJ, board) {
 function cellClicked(elCell, i, j) {
     var cellClass = 'cell-' + i + '-' + j;
     
+    // Implement that clicking a cell with “number” reveals the number of this cell
 
-    console.log(cellClass);
+    if (gBoard[i][j].minesAroundCount != 0) {
+        gBoard[i][j].isShown = true;
+    }
+    console.log(gBoard[i][j].isShown);
+
+
 
 }
 
-function getCellLocation(location) { // {i:2,j:7}
-    var cellClass = 'cell-' + location.i + '-' + location.j; // 'cell-2-7'
-    console.log(cellClass);
-    return cellClass;
-}
+// function getCellLocation(location) { // {i:2,j:7}
+//     var cellClass = 'cell-' + location.i + '-' + location.j; // 'cell-2-7'
+//     console.log(cellClass);
+//     return cellClass;
+// }
 
 
 

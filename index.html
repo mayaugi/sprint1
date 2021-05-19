@@ -9,18 +9,17 @@
 </head>
 <body onload="initGame()">
     <h1>Welcome to Minesweeper</h1>
-    <h2>Choose Level:</h2>
-    <ul>
-        <li onclick="ChangeLevel()">Easy</li>
-        <li onclick="ChangeLevel()">Medium</li>
-        <li onclick="ChangeLevel()">Hard</li>
-    </ul>
+    <h3>Choose Level:</h3>
+        <h5 onclick="ChangeLevel()">Easy</h5> 
+        <h5 onclick="ChangeLevel()">Medium</h5> 
+        <h5 onclick="ChangeLevel()">Hard</h5> 
+        
     <div>
         <p class="current-time">00:00</p>
         <p class="win-message"></p>
     </div>
 
-    <table class="table-style">
+    <table border="1" cellpadding="5" class="table-style">
         <tbody class="board">
         </tbody> 
     </table>
