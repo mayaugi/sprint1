@@ -31,6 +31,7 @@ h3 {
 h5 {
     text-align: center;
     color: darkblue;
+    cursor: pointer;
 }
 
 .current-time {
@@ -48,3 +49,5 @@ h2 {
     color: coral;
     
 }
+
+

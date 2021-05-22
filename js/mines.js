@@ -5,7 +5,6 @@ const FLAG_IMG = '⛳'
 
 var gBoard = {
 }
-var gFlagsCounter = 0
 
 var gLevel = {
     SIZE: 4,
@@ -23,26 +22,26 @@ var gRandomMines = [];
 
 function initGame() {
     gBoard = createBoard();
-    renderBoard(gBoard);
-    placeRendomMines()
-    placeRendomMines()
-
+    renderBoard();
+    placeRandomMines()
+    
 }
 
 function createBoard() {
-    var SIZE = 4;
+    var SIZE = gLevel.size;
     var board = [];
     for (var i = 0; i < SIZE; i++) {
         board.push([]);
         for (var j = 0; j < SIZE; j++) {
             var cell = {
-                minesAroundCount: 0, isShown: false,
+                minesAroundCount: 0, isShown: true,
                 isMine: false, isMarked: false,
             };
-
+            
             board[i][j] = cell;
         }
     }
+    
 
     // Place 2 Mines manually
 
@@ -97,6 +96,7 @@ function getMinesNegsCount(cellI, cellJ) {
             if (j < 0 || j >= gBoard[i].length) continue;
             if (gBoard[i][j].isMine === true) negsCount++;
 
+
         }
     }
     // console.log('negsCount', negsCount);
@@ -106,12 +106,13 @@ function getMinesNegsCount(cellI, cellJ) {
 
 
 function cellClicked(elCell, i, j) {
-    var cellClass = 'cell-' + i + '-' + j;
+    // var cellClass = 'cell-' + i + '-' + j;
 
     // Implement that clicking a cell with “number” reveals the number of this cell
 
     if (gBoard[i][j].isMine === false) {
         gBoard[i][j].isShown = true;
+        gGame.shownCount++;
         renderBoard()
         checkIfWin()
     } else {
@@ -126,28 +127,33 @@ function cellClicked(elCell, i, j) {
     }
 }
 
-function placeRendomMines() {
+function placeRandomMines() {
+    var randomMines = [];
+    for (var x = 0; x < gLevel.mines; x++) {
+        randomMines.push([]);
+        for (var y = 0; y < gLevel.mines; y++) {
+            var randI = getRandomInt(0, gLevel.size - 1);
+            // console.log('randI', randI);
+            var randJ = getRandomInt(0, gLevel.size - 1);
+            // console.log('randJ', randJ);
+        }
+        // model:
+        gBoard[randI][randJ].isMine = true;
 
-    var randI = getRandomInt(0, gBoard.length - 1);
-    // console.log('randI', randI);
-    var randJ = getRandomInt(0, gBoard.length - 1);
-    // console.log('randJ', randJ);
-
-    // model:
-    gBoard[randI][randJ].isMine = true;
-
-    // // DOM:
-    renderBoard()
-
-    gRandomMines.push({ i: randI, j: randJ })
-    // console.log('gRandomMines' , gRandomMines);
-
+        // // DOM:
+        renderBoard()
+        gRandomMines.push({ i: randI, j: randJ })
+    }
+    
+    console.log('gLevel.mines', gLevel.mines);
+    console.log('gRandomMines', gRandomMines);
 }
 
 
 function cellMarked(elCell, i, j) {
+    document.addEventListener('contextmenu', event => event.preventDefault());
     gBoard[i][j].isMarked = true;
-    gFlagsCounter += 1;
+    gGame.markedCount++
     renderBoard();
     checkIfWin()
 }
@@ -162,21 +168,16 @@ function GameOver() {
 }
 
 function checkIfWin() {
-    for (var x = 0; x < gRandomMines.length ; x++) {
+
+    for (var x = 0; x < gRandomMines.length; x++) {
         var mineLocation = gRandomMines[x]
         if (!gBoard[mineLocation.i][mineLocation.j].isMarked) {
             return
         }
     }
-    var shownCounter = 0
-    for (var i = 0; i < gBoard.length ; i++) {
-        for (var j = 0; j < gBoard.length; j++) {
-            if (gBoard[i][j].isShown) {
-                shownCounter += 1
-            }
-        }
-    }
-    if ((gBoard.length * gBoard.length) === shownCounter + gFlagsCounter && gFlagsCounter === gRandomMines.length) {
+
+
+    if ((gBoard.length * gBoard.length) === gGame.shownCount + gGame.markedCount && gGame.markedCount === gRandomMines.length) {
         var elMessage = document.querySelector('.win-message')
         elMessage.innerHTML = "You Won!"
     }
@@ -184,13 +185,21 @@ function checkIfWin() {
 
 
 
-// function ChangeLevel(numLevel){
-//     var data = document.querySelector ('h5');
-//     console.log('data' , data);
+function ChangeLevel(el) {
+    var data = el.dataset;
+    var dataSize = el.dataset.size;
+    var dataMines = el.dataset.mines;
+    // console.log('dataSize', dataSize);
+    // console.log('dataMines', dataMines);
 
-//     gLevel = numLevel;
-//     initGame();
-// }
+    gLevel = {
+        size: +dataSize,
+        mines: +dataMines,
+    }
+    // console.log('gLevel', gLevel);
+
+    initGame();
+}
 
 
 

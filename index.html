@@ -9,11 +9,12 @@
 </head>
 <body onload="initGame()">
     <h1>Welcome to Minesweeper</h1>
+    <div class="level"> 
     <h3>Choose Level:</h3>
         <h5 data-SIZE="4" data-MINES="2" onclick="ChangeLevel(this)">Beginner</h5> 
         <h5 data-SIZE="8" data-MINES="12" onclick="ChangeLevel(this)">Medium</h5> 
         <h5 data-SIZE="12" data-MINES="30" onclick="ChangeLevel(this)">Expert</h5> 
-        
+    </div>
     <div>
         <!-- <p class="current-time">00:00</p> -->
         <h2 class="win-message"></h2>
