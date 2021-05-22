@@ -7,8 +7,8 @@ var gBoard = {
 }
 
 var gLevel = {
-    SIZE: 4,
-    MINES: 2
+    size: 4,
+    mines: 2
 };
 
 var gGame = {
@@ -24,7 +24,7 @@ function initGame() {
     gBoard = createBoard();
     renderBoard();
     placeRandomMines()
-    
+
 }
 
 function createBoard() {
@@ -34,20 +34,21 @@ function createBoard() {
         board.push([]);
         for (var j = 0; j < SIZE; j++) {
             var cell = {
-                minesAroundCount: 0, isShown: true,
+                minesAroundCount: 0, isShown: false,
                 isMine: false, isMarked: false,
             };
-            
+
             board[i][j] = cell;
         }
     }
-    
+
 
     // Place 2 Mines manually
 
     // board[2][2].isMine = true;
     // board[3][0].isMine = true;
     // console.log('board', board);
+
     return board
 }
 
@@ -128,14 +129,15 @@ function cellClicked(elCell, i, j) {
 }
 
 function placeRandomMines() {
-    var randomMines = [];
+    gRandomMines = [];
     for (var x = 0; x < gLevel.mines; x++) {
-        randomMines.push([]);
-        for (var y = 0; y < gLevel.mines; y++) {
-            var randI = getRandomInt(0, gLevel.size - 1);
-            // console.log('randI', randI);
-            var randJ = getRandomInt(0, gLevel.size - 1);
-            // console.log('randJ', randJ);
+        var randI = getRandomInt(0, gLevel.size - 1);
+        // console.log('randI', randI);
+        var randJ = getRandomInt(0, gLevel.size - 1);
+        // console.log('randJ', randJ);
+        if (gBoard[randI][randJ].isMine) {
+            x--
+            continue
         }
         // model:
         gBoard[randI][randJ].isMine = true;
@@ -144,11 +146,10 @@ function placeRandomMines() {
         renderBoard()
         gRandomMines.push({ i: randI, j: randJ })
     }
-    
-    console.log('gLevel.mines', gLevel.mines);
-    console.log('gRandomMines', gRandomMines);
-}
 
+    // console.log('gLevel.mines', gLevel.mines);
+    // console.log('gRandomMines', gRandomMines);
+}
 
 function cellMarked(elCell, i, j) {
     document.addEventListener('contextmenu', event => event.preventDefault());
@@ -164,6 +165,7 @@ function GameOver() {
     renderBoard()
     var elMessage = document.querySelector('.win-message')
     elMessage.innerHTML = "Game Over!"
+    
 
 }
 
@@ -186,7 +188,7 @@ function checkIfWin() {
 
 
 function ChangeLevel(el) {
-    var data = el.dataset;
+    // var data = el.dataset;
     var dataSize = el.dataset.size;
     var dataMines = el.dataset.mines;
     // console.log('dataSize', dataSize);
@@ -200,7 +202,4 @@ function ChangeLevel(el) {
 
     initGame();
 }
-
-
-
 
